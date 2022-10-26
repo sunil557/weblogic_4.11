@@ -1,0 +1,165 @@
+[root@mcds-golden-image8 weblogic-ansible]# ansible-playbook  weblogic-fmw-domain.yml -vv
+ansible-playbook 2.8.18
+  config file = /home/ansible/work/weblogic-ansible/ansible.cfg
+  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3.6/site-packages/ansible
+  executable location = /usr/bin/ansible-playbook
+  python version = 3.6.8 (default, Jun 14 2022, 12:54:58) [GCC 8.5.0 20210514 (Red Hat 8.5.0-10)]
+Using /home/ansible/work/weblogic-ansible/ansible.cfg as config file
+[WARNING]: Unable to parse /home/ansible/work/weblogic-ansible/inventory as an
+inventory source
+
+[WARNING]: No inventory was parsed, only implicit localhost is available
+
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the
+implicit localhost does not match 'all'
+
+[DEPRECATION WARNING]: Instead of sudo/sudo_user, use become/become_user and make sure
+ become_method is 'sudo' (default). This feature will be removed in version 2.9. 
+Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+ansible.cfg.
+[WARNING]: While constructing a mapping from /home/ansible/work/weblogic-
+ansible/secrets.yml, line 1, column 1, found a duplicate dict key
+(datasource_password). Using last defined value only.
+
+
+PLAYBOOK: weblogic-fmw-domain.yml *****************************************************
+1 plays in weblogic-fmw-domain.yml
+
+PLAY [Configure RHEL 7 with WebLogic 12c domain] **************************************
+
+TASK [Gathering Facts] ****************************************************************
+task path: /home/ansible/work/weblogic-ansible/weblogic-fmw-domain.yml:2
+ok: [localhost]
+
+TASK [fix host file 127.0.0.1 entry] **************************************************
+task path: /home/ansible/work/weblogic-ansible/weblogic-fmw-domain.yml:19
+ok: [localhost] => {"backup": "", "changed": false, "msg": ""}
+META: ran handlers
+
+TASK [linux-wls : Install required libraries] *****************************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-wls/tasks/main.yml:8
+[DEPRECATION WARNING]: Invoking "yum" only once while using a loop via squash_actions 
+is deprecated. Instead of using a loop to supply multiple items and specifying `name: 
+"{{ item }}"`, please use `name: '{{packages_list}}'` and remove the loop. This 
+feature will be removed in version 2.11. Deprecation warnings can be disabled by 
+setting deprecation_warnings=False in ansible.cfg.
+ok: [localhost] => (item=['binutils', 'gcc.x86_64', 'gcc-c++.x86_64', 'glibc.x86_64', 'glibc-devel.x86_64', 'libaio.x86_64', 'libaio-devel.x86_64', 'libgcc.x86_64', 'libstdc++.x86_64', 'libstdc++-devel.x86_64', 'ksh', 'make', 'sysstat']) => {"ansible_loop_var": "item", "changed": false, "item": ["binutils", "gcc.x86_64", "gcc-c++.x86_64", "glibc.x86_64", "glibc-devel.x86_64", "libaio.x86_64", "libaio-devel.x86_64", "libgcc.x86_64", "libstdc++.x86_64", "libstdc++-devel.x86_64", "ksh", "make", "sysstat"], "msg": "Nothing to do", "rc": 0, "results": ["Installed: binutils", "Installed: gcc.x86_64", "Installed: gcc-c++.x86_64", "Installed: glibc.x86_64", "Installed: glibc-devel.x86_64", "Installed: libaio.x86_64", "Installed: libaio-devel.x86_64", "Installed: libgcc.x86_64", "Installed: libstdc++.x86_64", "Installed: libstdc++-devel.x86_64", "Installed: ksh", "Installed: make", "Installed: sysstat"]}
+
+TASK [linux-wls : Disable SELinux] ****************************************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-wls/tasks/main.yml:11
+ok: [localhost] => {"changed": false, "configfile": "/etc/selinux/config", "msg": "", "policy": "targeted", "reboot_required": false, "state": "disabled"}
+
+TASK [linux-wls : Disable Firewall Deamon (firewalld)] ********************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-wls/tasks/main.yml:13
+ok: [localhost] => {"changed": false, "enabled": false, "name": "firewalld", "state": "stopped", "status": {"ActiveEnterTimestampMonotonic": "0", "ActiveExitTimestampMonotonic": "0", "ActiveState": "inactive", "After": "basic.target dbus.service system.slice polkit.service dbus.socket sysinit.target", "AllowIsolate": "no", "AllowedCPUs": "", "AllowedMemoryNodes": "", "AmbientCapabilities": "", "AssertResult": "no", "AssertTimestampMonotonic": "0", "Before": "shutdown.target network-pre.target", "BlockIOAccounting": "no", "BlockIOWeight": "[not set]", "BusName": "org.fedoraproject.FirewallD1", "CPUAccounting": "no", "CPUAffinity": "", "CPUAffinityFromNUMA": "no", "CPUQuotaPerSecUSec": "infinity", "CPUQuotaPeriodUSec": "infinity", "CPUSchedulingPolicy": "0", "CPUSchedulingPriority": "0", "CPUSchedulingResetOnFork": "no", "CPUShares": "[not set]", "CPUUsageNSec": "[not set]", "CPUWeight": "[not set]", "CacheDirectoryMode": "0755", "CanFreeze": "yes", "CanIsolate": "no", "CanReload": "yes", "CanStart": "yes", "CanStop": "yes", "CapabilityBoundingSet": "cap_chown cap_dac_override cap_dac_read_search cap_fowner cap_fsetid cap_kill cap_setgid cap_setuid cap_setpcap cap_linux_immutable cap_net_bind_service cap_net_broadcast cap_net_admin cap_net_raw cap_ipc_lock cap_ipc_owner cap_sys_module cap_sys_rawio cap_sys_chroot cap_sys_ptrace cap_sys_pacct cap_sys_admin cap_sys_boot cap_sys_nice cap_sys_resource cap_sys_time cap_sys_tty_config cap_mknod cap_lease cap_audit_write cap_audit_control cap_setfcap cap_mac_override cap_mac_admin cap_syslog cap_wake_alarm cap_block_suspend cap_audit_read cap_perfmon cap_bpf", "CollectMode": "inactive", "ConditionResult": "no", "ConditionTimestampMonotonic": "0", "ConfigurationDirectoryMode": "0755", "Conflicts": "ip6tables.service ipset.service ebtables.service nftables.service shutdown.target iptables.service", "ControlPID": "0", "DefaultDependencies": "yes", "DefaultMemoryLow": "0", "DefaultMemoryMin": "0", "Delegate": "no", "Description": "firewalld - dynamic firewall daemon", "DevicePolicy": "auto", "Documentation": "man:firewalld(1)", "DynamicUser": "no", "EffectiveCPUs": "", "EffectiveMemoryNodes": "", "EnvironmentFiles": "/etc/sysconfig/firewalld (ignore_errors=yes)", "ExecMainCode": "0", "ExecMainExitTimestampMonotonic": "0", "ExecMainPID": "0", "ExecMainStartTimestampMonotonic": "0", "ExecMainStatus": "0", "ExecReload": "{ path=/bin/kill ; argv[]=/bin/kill -HUP $MAINPID ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "ExecStart": "{ path=/usr/sbin/firewalld ; argv[]=/usr/sbin/firewalld --nofork --nopid $FIREWALLD_ARGS ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }", "FailureAction": "none", "FileDescriptorStoreMax": "0", "FragmentPath": "/usr/lib/systemd/system/firewalld.service", "FreezerState": "running", "GID": "[not set]", "GuessMainPID": "yes", "IOAccounting": "no", "IOSchedulingClass": "0", "IOSchedulingPriority": "0", "IOWeight": "[not set]", "IPAccounting": "no", "IPEgressBytes": "18446744073709551615", "IPEgressPackets": "18446744073709551615", "IPIngressBytes": "18446744073709551615", "IPIngressPackets": "18446744073709551615", "Id": "firewalld.service", "IgnoreOnIsolate": "no", "IgnoreSIGPIPE": "yes", "InactiveEnterTimestampMonotonic": "0", "InactiveExitTimestampMonotonic": "0", "JobRunningTimeoutUSec": "infinity", "JobTimeoutAction": "none", "JobTimeoutUSec": "infinity", "KeyringMode": "private", "KillMode": "mixed", "KillSignal": "15", "LimitAS": "infinity", "LimitASSoft": "infinity", "LimitCORE": "infinity", "LimitCORESoft": "0", "LimitCPU": "infinity", "LimitCPUSoft": "infinity", "LimitDATA": "infinity", "LimitDATASoft": "infinity", "LimitFSIZE": "infinity", "LimitFSIZESoft": "infinity", "LimitLOCKS": "infinity", "LimitLOCKSSoft": "infinity", "LimitMEMLOCK": "65536", "LimitMEMLOCKSoft": "65536", "LimitMSGQUEUE": "819200", "LimitMSGQUEUESoft": "819200", "LimitNICE": "0", "LimitNICESoft": "0", "LimitNOFILE": "262144", "LimitNOFILESoft": "1024", "LimitNPROC": "14771", "LimitNPROCSoft": "14771", "LimitRSS": "infinity", "LimitRSSSoft": "infinity", "LimitRTPRIO": "0", "LimitRTPRIOSoft": "0", "LimitRTTIME": "infinity", "LimitRTTIMESoft": "infinity", "LimitSIGPENDING": "14771", "LimitSIGPENDINGSoft": "14771", "LimitSTACK": "infinity", "LimitSTACKSoft": "8388608", "LoadState": "loaded", "LockPersonality": "no", "LogLevelMax": "-1", "LogRateLimitBurst": "0", "LogRateLimitIntervalUSec": "0", "LogsDirectoryMode": "0755", "MainPID": "0", "MemoryAccounting": "yes", "MemoryCurrent": "[not set]", "MemoryDenyWriteExecute": "no", "MemoryHigh": "infinity", "MemoryLimit": "infinity", "MemoryLow": "0", "MemoryMax": "infinity", "MemoryMin": "0", "MemorySwapMax": "infinity", "MountAPIVFS": "no", "MountFlags": "", "NFileDescriptorStore": "0", "NRestarts": "0", "NUMAMask": "", "NUMAPolicy": "n/a", "Names": "firewalld.service", "NeedDaemonReload": "no", "Nice": "0", "NoNewPrivileges": "no", "NonBlocking": "no", "NotifyAccess": "none", "OOMScoreAdjust": "0", "OnFailureJobMode": "replace", "PermissionsStartOnly": "no", "Perpetual": "no", "PrivateDevices": "no", "PrivateMounts": "no", "PrivateNetwork": "no", "PrivateTmp": "no", "PrivateUsers": "no", "ProtectControlGroups": "no", "ProtectHome": "no", "ProtectKernelModules": "no", "ProtectKernelTunables": "no", "ProtectSystem": "no", "RefuseManualStart": "no", "RefuseManualStop": "no", "RemainAfterExit": "no", "RemoveIPC": "no", "Requires": "dbus.socket sysinit.target system.slice", "Restart": "no", "RestartUSec": "100ms", "RestrictNamespaces": "no", "RestrictRealtime": "no", "RestrictSUIDSGID": "no", "Result": "success", "RootDirectoryStartOnly": "no", "RuntimeDirectoryMode": "0755", "RuntimeDirectoryPreserve": "no", "RuntimeMaxUSec": "infinity", "SameProcessGroup": "no", "SecureBits": "0", "SendSIGHUP": "no", "SendSIGKILL": "yes", "Slice": "system.slice", "StandardError": "null", "StandardInput": "null", "StandardInputData": "", "StandardOutput": "null", "StartLimitAction": "none", "StartLimitBurst": "5", "StartLimitIntervalUSec": "10s", "StartupBlockIOWeight": "[not set]", "StartupCPUShares": "[not set]", "StartupCPUWeight": "[not set]", "StartupIOWeight": "[not set]", "StateChangeTimestampMonotonic": "0", "StateDirectoryMode": "0755", "StatusErrno": "0", "StopWhenUnneeded": "no", "SubState": "dead", "SuccessAction": "none", "SyslogFacility": "3", "SyslogLevel": "6", "SyslogLevelPrefix": "yes", "SyslogPriority": "30", "SystemCallErrorNumber": "0", "TTYReset": "no", "TTYVHangup": "no", "TTYVTDisallocate": "no", "TasksAccounting": "yes", "TasksCurrent": "[not set]", "TasksMax": "23634", "TimeoutStartUSec": "1min 30s", "TimeoutStopUSec": "1min 30s", "TimerSlackNSec": "50000", "Transient": "no", "Type": "dbus", "UID": "[not set]", "UMask": "0022", "UnitFilePreset": "enabled", "UnitFileState": "disabled", "UtmpMode": "init", "Wants": "network-pre.target", "WatchdogTimestampMonotonic": "0", "WatchdogUSec": "0"}}
+
+TASK [linux-wls : Change kernel parameters] *******************************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-wls/tasks/main.yml:15
+ok: [localhost] => (item={'key': 'kernel.shmmax', 'value': 2147483648}) => {"ansible_loop_var": "item", "changed": false, "item": {"key": "kernel.shmmax", "value": 2147483648}}
+ok: [localhost] => (item={'key': 'kernel.shmall', 'value': 524288}) => {"ansible_loop_var": "item", "changed": false, "item": {"key": "kernel.shmall", "value": 524288}}
+ok: [localhost] => (item={'key': 'net.core.rmem_max', 'value': 16777216}) => {"ansible_loop_var": "item", "changed": false, "item": {"key": "net.core.rmem_max", "value": 16777216}}
+ok: [localhost] => (item={'key': 'net.core.wmem_max', 'value': 16777216}) => {"ansible_loop_var": "item", "changed": false, "item": {"key": "net.core.wmem_max", "value": 16777216}}
+ok: [localhost] => (item={'key': 'net.ipv4.tcp_rmem', 'value': '4096 87380 16777216'}) => {"ansible_loop_var": "item", "changed": false, "item": {"key": "net.ipv4.tcp_rmem", "value": "4096 87380 16777216"}}
+ok: [localhost] => (item={'key': 'net.ipv4.tcp_wmem', 'value': '4096 65536 16777216'}) => {"ansible_loop_var": "item", "changed": false, "item": {"key": "net.ipv4.tcp_wmem", "value": "4096 65536 16777216"}}
+ok: [localhost] => (item={'key': 'vm.swappiness', 'value': 10}) => {"ansible_loop_var": "item", "changed": false, "item": {"key": "vm.swappiness", "value": 10}}
+ok: [localhost] => (item={'key': 'vm.dirty_background_ratio', 'value': 5}) => {"ansible_loop_var": "item", "changed": false, "item": {"key": "vm.dirty_background_ratio", "value": 5}}
+ok: [localhost] => (item={'key': 'vm.dirty_ratio', 'value': 10}) => {"ansible_loop_var": "item", "changed": false, "item": {"key": "vm.dirty_ratio", "value": 10}}
+ok: [localhost] => (item={'key': 'fs.file-max', 'value': 262144}) => {"ansible_loop_var": "item", "changed": false, "item": {"key": "fs.file-max", "value": 262144}}
+ok: [localhost] => (item={'key': 'net.ipv4.tcp_keepalive_time', 'value': 300}) => {"ansible_loop_var": "item", "changed": false, "item": {"key": "net.ipv4.tcp_keepalive_time", "value": 300}}
+ok: [localhost] => (item={'key': 'net.ipv4.tcp_keepalive_intvl', 'value': 60}) => {"ansible_loop_var": "item", "changed": false, "item": {"key": "net.ipv4.tcp_keepalive_intvl", "value": 60}}
+ok: [localhost] => (item={'key': 'net.ipv4.tcp_keepalive_probes', 'value': 10}) => {"ansible_loop_var": "item", "changed": false, "item": {"key": "net.ipv4.tcp_keepalive_probes", "value": 10}}
+
+TASK [linux-wls : Create groups] ******************************************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-wls/tasks/main.yml:20
+ok: [localhost] => {"changed": false, "gid": 1001, "name": "oinstall", "state": "present", "system": false}
+
+TASK [linux-wls : Create user] ********************************************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-wls/tasks/main.yml:22
+ok: [localhost] => {"append": false, "changed": false, "comment": "", "group": 1002, "groups": "oinstall", "home": "/home/oracle", "move_home": false, "name": "oracle", "password": "NOT_LOGGING_PASSWORD", "shell": "/bin/bash", "state": "present", "uid": 1001}
+
+TASK [linux-wls : Add soft limit number of open files] ********************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-wls/tasks/main.yml:26
+ok: [localhost] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [linux-wls : Add hard limit for number of open files] ****************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-wls/tasks/main.yml:28
+ok: [localhost] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [linux-wls : Add soft limit for number of processes] *****************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-wls/tasks/main.yml:30
+ok: [localhost] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [linux-wls : Add hard limit for number of processes] *****************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-wls/tasks/main.yml:32
+ok: [localhost] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [linux-wls : Create a shell profile with file and process limits for oracle user] ***
+task path: /home/ansible/work/weblogic-ansible/roles/linux-wls/tasks/main.yml:34
+ok: [localhost] => {"changed": false, "checksum": "b6848c0d1fa422d2f550ede99024a1a11eb8a8c8", "dest": "/etc/profile.d/oracle-limits.sh", "gid": 0, "group": "root", "mode": "0600", "owner": "root", "path": "/etc/profile.d/oracle-limits.sh", "size": 161, "state": "file", "uid": 0}
+
+TASK [linux-wls : Create Oracle Home directory] ***************************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-wls/tasks/main.yml:38
+changed: [localhost] => {"changed": true, "gid": 1001, "group": "oinstall", "mode": "0755", "owner": "oracle", "path": "/tmp/fmw12.1.3/product/Oracle_Home", "size": 6, "state": "directory", "uid": 1001}
+
+TASK [linux-wls : Create Domain Home directory] ***************************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-wls/tasks/main.yml:40
+ok: [localhost] => {"changed": false, "gid": 1001, "group": "oinstall", "mode": "0760", "owner": "oracle", "path": "/tmp/fmw12.1.3/config/Domains", "size": 6, "state": "directory", "uid": 1001}
+
+TASK [linux-wls : Create Applications Home directory] *********************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-wls/tasks/main.yml:42
+ok: [localhost] => {"changed": false, "gid": 1001, "group": "oinstall", "mode": "0760", "owner": "oracle", "path": "/tmp/fmw12.1.3/config/applications", "size": 6, "state": "directory", "uid": 1001}
+
+TASK [linux-jdk : Copy jdk archive to host] *******************************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-jdk/tasks/main.yml:7
+ok: [localhost] => {"changed": false, "dest": "/root/jdk-7u80-linux-x64.tar.gz", "src": "/home/ansible/work/weblogic-ansible/roles/linux-jdk/files/jdk-7u80-linux-x64.tar.gz"}
+
+TASK [linux-jdk : Extract JDK archive] ************************************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-jdk/tasks/main.yml:11
+ok: [localhost] => {"changed": false, "cmd": ["tar", "-xf", "~/jdk-7u80-linux-x64.tar.gz", "-C", "/tmp/fmw12.1.3"], "rc": 0, "stdout": "skipped, since /tmp/fmw12.1.3/jdk1.7.0_80 exists", "stdout_lines": ["skipped, since /tmp/fmw12.1.3/jdk1.7.0_80 exists"]}
+
+TASK [linux-jdk : Change ownership of jdk folder] *************************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-jdk/tasks/main.yml:15
+ok: [localhost] => {"changed": false, "gid": 1001, "group": "oinstall", "mode": "0770", "owner": "oracle", "path": "/tmp/fmw12.1.3/jdk1.7.0_80", "size": 233, "state": "directory", "uid": 1001}
+
+TASK [linux-jdk : Change entropy device for java] *************************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-jdk/tasks/main.yml:17
+[WARNING]: Consider using the replace, lineinfile or template module rather than
+running 'sed'.  If you need to use command because replace, lineinfile or template is
+insufficient you can add 'warn: false' to this command task or set
+'command_warnings=False' in ansible.cfg to get rid of this message.
+
+changed: [localhost] => {"changed": true, "cmd": ["sed", "-i.bak", "s/urandom/.\\/urandom/", "/tmp/fmw12.1.3/jdk1.7.0_80/jre/lib/security/java.security"], "delta": "0:00:00.005456", "end": "2022-09-30 07:30:25.904145", "rc": 0, "start": "2022-09-30 07:30:25.898689", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [linux-jdk : Add JAVA_HOME environment variariables in bashrc] *******************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-jdk/tasks/main.yml:19
+ok: [localhost] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [linux-jdk : Add Java bin folder to path in bashrc] ******************************
+task path: /home/ansible/work/weblogic-ansible/roles/linux-jdk/tasks/main.yml:21
+ok: [localhost] => {"backup": "", "changed": false, "msg": ""}
+
+TASK [fmw-software : Create installer directory] **************************************
+task path: /home/ansible/work/weblogic-ansible/roles/fmw-software/tasks/main.yml:8
+ok: [localhost] => {"changed": false, "gid": 1001, "group": "oinstall", "mode": "0760", "owner": "oracle", "path": "/tmp/fmw12.1.3/installer", "size": 82, "state": "directory", "uid": 1001}
+
+TASK [fmw-software : Copy Middleware Installer] ***************************************
+task path: /home/ansible/work/weblogic-ansible/roles/fmw-software/tasks/main.yml:10
+ok: [localhost] => {"changed": false, "checksum": "5b1761ba2fc31dc8c32436159911e55097b00b1e", "dest": "/tmp/fmw12.1.3/installer/fmw_12.1.3.0.0_wls.jar", "gid": 1001, "group": "oinstall", "mode": "0644", "owner": "oracle", "path": "/tmp/fmw12.1.3/installer/fmw_12.1.3.0.0_wls.jar", "size": 923179081, "state": "file", "uid": 1001}
+
+TASK [fmw-software : Copy file for silent installation] *******************************
+task path: /home/ansible/work/weblogic-ansible/roles/fmw-software/tasks/main.yml:12
+ok: [localhost] => {"changed": false, "checksum": "9d2f43d4316f27d1fd4675402599f84979caf6b6", "dest": "/tmp/fmw12.1.3/installer/silent-weblogic.txt", "gid": 1001, "group": "oinstall", "mode": "0660", "owner": "oracle", "path": "/tmp/fmw12.1.3/installer/silent-weblogic.txt", "size": 1278, "state": "file", "uid": 1001}
+
+TASK [fmw-software : Copy OraInst.loc] ************************************************
+task path: /home/ansible/work/weblogic-ansible/roles/fmw-software/tasks/main.yml:14
+ok: [localhost] => {"changed": false, "checksum": "8a1bead0f790e8a3df2ead42791ea3a217eca6fe", "dest": "/tmp/fmw12.1.3/installer/oraInst.loc", "gid": 1001, "group": "oinstall", "mode": "0660", "owner": "oracle", "path": "/tmp/fmw12.1.3/installer/oraInst.loc", "size": 48, "state": "file", "uid": 1001}
+
+TASK [fmw-software : execute Weblogic installer] **************************************
+task path: /home/ansible/work/weblogic-ansible/roles/fmw-software/tasks/main.yml:16
+changed: [localhost] => {"changed": true, "cmd": ["/tmp/fmw12.1.3/jdk1.7.0_80/bin/java", "-Xms1024m", "-Xmx1024m", "-jar", "/tmp/fmw12.1.3/installer/fmw_12.1.3.0.0_wls.jar", "-silent", "-responseFile", "/tmp/fmw12.1.3/installer/silent-weblogic.txt", "-invPtrLoc", "/tmp/fmw12.1.3/installer/oraInst.loc"], "delta": "0:01:01.979199", "end": "2022-09-30 07:31:38.731593", "rc": 0, "start": "2022-09-30 07:30:36.752394", "stderr": "", "stderr_lines": [], "stdout": "Launcher log file is /tmp/OraInstall2022-09-30_07-30-36AM/launcher2022-09-30_07-30-36AM.log.\nExtracting files........\nStarting Oracle Universal Installer\n\nChecking if CPU speed is above 300 MHz.   Actual 2599.998 MHz    Passed\nChecking swap space: must be greater than 512 MB.   Actual 2097148 MB    Passed\nChecking if this platform requires a 64-bit JVM.   Actual 64    Passed (64-bit not required)\nChecking temp space: must be greater than 300 MB.   Actual 1070 MB    Passed\n\n\nPreparing to launch the Oracle Universal Installer from /tmp/OraInstall2022-09-30_07-30-36AM\nLog: /tmp/OraInstall2022-09-30_07-30-36AM/install2022-09-30_07-30-36AM.log\nCopyright (c) 1996, 2014, Oracle and/or its affiliates. All rights reserved.\nReading response file..\nStarting check : CertifiedVersions\nExpected result: One of enterprise-4,enterprise-5,enterprise-6,redhat-6,redhat-4,redhat-5,SuSE-11\nActual Result: redhat-8.6\nCheck complete. The overall result of this check is: Failed <<<<\n\nProblem: This Oracle software is not certified on the current operating system.\nRecommendation: Make sure you are installing the software on the correct platform.\nWarning: Check:CertifiedVersions failed.\nStarting check : CheckJDKVersion\nExpected result: 1.7.0_15\nActual Result: 1.7.0_80\nCheck complete. The overall result of this check is: Passed\nCheckJDKVersion Check: Success.\nValidations are enabled for this session.\nVerifying data......\nCopying Files...\nYou can find the log of this install session at:\n /tmp/OraInstall2022-09-30_07-30-36AM/install2022-09-30_07-30-36AM.log\n-----------20%----------40%----------60%----------80%--------100%\n\nThe installation of Oracle Fusion Middleware 12c WebLogic Server and Coherence 12.1.3.0.0 completed successfully.\nLogs successfully copied to /tmp/fmw12.1.3/logs.", "stdout_lines": ["Launcher log file is /tmp/OraInstall2022-09-30_07-30-36AM/launcher2022-09-30_07-30-36AM.log.", "Extracting files........", "Starting Oracle Universal Installer", "", "Checking if CPU speed is above 300 MHz.   Actual 2599.998 MHz    Passed", "Checking swap space: must be greater than 512 MB.   Actual 2097148 MB    Passed", "Checking if this platform requires a 64-bit JVM.   Actual 64    Passed (64-bit not required)", "Checking temp space: must be greater than 300 MB.   Actual 1070 MB    Passed", "", "", "Preparing to launch the Oracle Universal Installer from /tmp/OraInstall2022-09-30_07-30-36AM", "Log: /tmp/OraInstall2022-09-30_07-30-36AM/install2022-09-30_07-30-36AM.log", "Copyright (c) 1996, 2014, Oracle and/or its affiliates. All rights reserved.", "Reading response file..", "Starting check : CertifiedVersions", "Expected result: One of enterprise-4,enterprise-5,enterprise-6,redhat-6,redhat-4,redhat-5,SuSE-11", "Actual Result: redhat-8.6", "Check complete. The overall result of this check is: Failed <<<<", "", "Problem: This Oracle software is not certified on the current operating system.", "Recommendation: Make sure you are installing the software on the correct platform.", "Warning: Check:CertifiedVersions failed.", "Starting check : CheckJDKVersion", "Expected result: 1.7.0_15", "Actual Result: 1.7.0_80", "Check complete. The overall result of this check is: Passed", "CheckJDKVersion Check: Success.", "Validations are enabled for this session.", "Verifying data......", "Copying Files...", "You can find the log of this install session at:", " /tmp/OraInstall2022-09-30_07-30-36AM/install2022-09-30_07-30-36AM.log", "-----------20%----------40%----------60%----------80%--------100%", "", "The installation of Oracle Fusion Middleware 12c WebLogic Server and Coherence 12.1.3.0.0 completed successfully.", "Logs successfully copied to /tmp/fmw12.1.3/logs."]}
+META: ran handlers
+META: ran handlers
+
+PLAY RECAP ****************************************************************************
+localhost                  : ok=27   changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
