@@ -15,30 +15,6 @@
     # - role: fmw-managed-server
   pre_tasks:
 
-    - name: Delete the installers
-      file:
-        path: "/tmp/9.0.0.10-IBM-MQC-Win64.zip"
-        state: absent
-      delegate_to: localhost
-    
-    - name: Delete the installers
-      file:
-        path: "/tmp/9.0.0-IBM-MQ-LinuxX64-FP0001.tar.gz"
-        state: absent
-      delegate_to: localhost
-
-    - name: Delete the installers
-      file:
-        path: "/tmp/WSMQ_8.0.0.4_TRIAL_LNX_ON_X86_64_.tar.gz"
-        state: absent
-      delegate_to: localhost
-
-    - name: Delete the installers
-      file:
-        path: "/tmp/WS_MQ_FOR_WINDOWS_V8.0_EIMAGE.zip"
-        state: absent
-      delegate_to: localhost
-
     - name: Passing manditory arguments
       shell: |
         subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
