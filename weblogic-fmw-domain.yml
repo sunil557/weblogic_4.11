@@ -1,7 +1,7 @@
 ---
 - name: Configure RHEL 7 with WebLogic 12c domain
-  hosts: localhost
-  become: true
+  hosts: all
+  become: false
   vars_files:
     # User defined variables for infrastructure
     - infra-vars.yml
