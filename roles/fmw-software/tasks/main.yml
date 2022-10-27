@@ -5,6 +5,26 @@
 ################################################################################
 
 # ==> Install Fussion Middleware Infrastructure
+
+---
+- name: Downloading weblogic binary
+  uri:
+    url: "{{ weblogic_repo_root }}/{{ weblogic_base_path }}/{{ mw_installer }}"
+    method: GET
+    dest: "/tmp"
+    headers:
+      Accept: application/json
+    validate_certs: false
+    status_code: [200,304]
+  delegate_to: localhost
+  become: false
+
+- name: Copy the installation binary to remote node from ansible master node
+  copy:
+    src: "/tmp/{{ mw_installer }}"
+    dest: "/tmp/{{ mw_installer }}"
+  
+
 - name: Create installer directory
   file: state=directory path={{ mw_installer_folder }} owner={{ oracle_user }} group={{ oracle_group }}
 - name: Copy Middleware Installer
@@ -14,7 +34,7 @@
 - name: Copy OraInst.loc
   template: src=oraInst.loc dest={{ mw_installer_folder }} owner={{ oracle_user }} group={{ oracle_group }}
 - name: execute Weblogic installer
-  command: "{{ jdk_folder }}/bin/java -Xms1024m -Xmx1024m -jar {{ mw_installer_folder }}/{{ mw_installer }} -silent -responseFile {{ mw_installer_folder }}/silent-weblogic.txt -invPtrLoc {{ mw_installer_folder }}/oraInst.loc"
+  command: "{{ mw_folder }}/bin/java -Xms1024m -Xmx1024m -jar {{ mw_installer_folder }}/{{ mw_installer }} -silent -responseFile {{ mw_installer_folder }}/silent-weblogic.txt -invPtrLoc {{ mw_installer_folder }}/oraInst.loc"
   become: true
   become_user: '{{ oracle_user }}'
   #sudo_user: '{{ oracle_user }}'

@@ -14,8 +14,17 @@ jdk_installation_archive: 'jdk-7u80-linux-x64.tar.gz'
 jdk_folder: '{{ oracle_base }}/jdk1.7.0_80'
 jdk_copy_path_to_ansible_node: 'roles/linux-jdk/files/'
 
+#Weblogic server, roles/fmw-software/files/fmw_12.1.3.0.0_wls.jar
+#IBM internal software repo: http://10.134.151.85:8888/oracle/weblogic/v12/base/
+
+weblogic_repo_root: 'http://10.134.151.85:8888'
+weblogic_base_path: '/oracle/weblogic/v12/base/'
+weblogic_copy_path_to_ansible_node: 'roles/fmw-software/files'
+
 # fmw installer
 mw_installer: 'fmw_12.1.3.0.0_wls.jar'
+
+
 
 #===========================================================
 # database settings for repository
