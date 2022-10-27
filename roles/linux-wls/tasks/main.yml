@@ -6,16 +6,16 @@
 
 # ==> providing the manditory arguments 
 - name: register machine
-redhat_subscription:
+  redhat_subscription:
     state: present
     username: "{{subscription_user}}"
     password: "{{subscription_password}}"
     autosubscribe: true
-become: true
+  become: true
 - name: enable repo
-rhsm_repository:
+  rhsm_repository:
     name: ansible-2.8-for-rhel-8-x86_64-rpms
-become: true
+  become: true
     
 # ==> Configure Linux
 - name: Install required libraries
