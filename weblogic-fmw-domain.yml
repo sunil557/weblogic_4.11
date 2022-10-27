@@ -15,14 +15,34 @@
     # - role: fmw-managed-server
   pre_tasks:
 
-- name: Passing manditory arguments
-  shell: |
-    subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
-    subscription-manager register --username sunil57.kdp@gmail.com --password Sunil_u2457 --auto-attach --force
-    yum install git vim python39 ansible 
-    mount -o remount,exec /tmp
+    - name: Delete the installers
+      file:
+        path: "/tmp/9.0.0.10-IBM-MQC-Win64.zip"
+        state: absent
+      delegate_to: localhost
+    
+    - name: Delete the installers
+      file:
+      path: "/tmp/9.0.0-IBM-MQ-LinuxX64-FP0001.tar.gz"
+      state: absent
+      delegate_to: localhost
+
+    - name: Delete the installers
+      file:
+      path: "/tmp/WSMQ_8.0.0.4_TRIAL_LNX_ON_X86_64_.tar.gz"
+      state: absent
+      delegate_to: localhost
+
+    - name: Passing manditory arguments
+      shell: |
+        subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
+        subscription-manager register --username sunil57.kdp@gmail.com --password Sunil_u2457 --auto-attach --force
+        yum install git vim python39 ansible 
+        mount -o remount,exec /tmp
 
    # ==> Fix hosts file. Remove hostname from local loop. A workaround for vagrant
    # adding hostname to local loop
    #- name: fix host file 127.0.0.1 entry
    #  lineinfile: dest=/etc/hosts regexp='^127\.0\.0\.1' line='127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4' owner=root group=root mode=0644
+
+
