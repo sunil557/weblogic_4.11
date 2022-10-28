@@ -39,11 +39,9 @@
 
 - name: "Check swap file type"
   command: file {{ swap_file_path }}
-  register: swapfile
 
 - name: Make swap file
   command: " mkswap {{ swap_file_path }}"
-  when: swapfile.stdout.find('swapfile') == -1
 
 #condition check that swap is already mounted
 
@@ -57,7 +55,6 @@
 
 - name: Turn on swap
   command: swapon -a
-  when: not swap_file_check.stat.exists
 
 #swapon -a making all available & Devices that are already being used as swap are silently skipped.
  
