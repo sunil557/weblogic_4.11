@@ -37,15 +37,22 @@
 
 #sudo chmod 600 /swapfile
 
+- name: "Check swap file type"
+  command: file {{ swap_file_path }}
+  register: swapfile
+
 - name: Make swap file
   command: " mkswap {{ swap_file_path }}"
-  
+  when: swapfile.stdout.find('swapfile') == -1
+
+#condition check that swap is already mounted
 
 #sudo mkswap /swapfile
 
 - name: Make swapon file
   command: " swapon {{ swap_file_path }} "
   
+
 #sudo swapon /swapfile
 
 - name: Turn on swap
@@ -69,6 +76,11 @@
   
 #/swapfile swap swap defaults 0 0
 
+- name: Mount swap
+  command: "swapon {{ swap_file_path }}"
+  when: ansible_swaptotal_mb < 1
+
+#
 - name: Create installer directory
   file: state=directory path={{ mw_installer_folder }} owner={{ oracle_user }} group={{ oracle_group }}
 - name: Copy Middleware Installer
