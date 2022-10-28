@@ -38,13 +38,13 @@
 #sudo chmod 600 /swapfile
 
 - name: Make swap file
-  command: "sudo mkswap {{ swap_file_path }}"
-  when: swapfile.stdout.find('swap file') == -1
+  command: " mkswap {{ swap_file_path }}"
+  
 
 #sudo mkswap /swapfile
 
 - name: Make swapon file
-  command: "sudo swapon {{ swap_file_path }}"
+  command: " swapon {{ swap_file_path }} "
   
 #sudo swapon /swapfile
 
