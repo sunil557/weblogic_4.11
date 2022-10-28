@@ -23,7 +23,51 @@
   copy:
     src: "/tmp/{{ mw_installer }}"
     dest: "/tmp/{{ mw_installer }}"
+
+- name: creteing swap space on ec2 instance
+  command: dd if=/dev/zero of={{ swap_file_path }} bs={{ swap_bs_size_mb }} count={{ swap_file_size_mb }}k
+           creates="{{ swap_file_path }}"
+
+
+- name: Change swap file permissions
+  file: path="{{ swap_file_path }}"
+        owner=root
+        group=root
+        mode=0600
+
+#sudo chmod 600 /swapfile
+
+- name: Make swap file
+  command: "sudo mkswap {{ swap_file_path }}"
+  when: swapfile.stdout.find('swap file') == -1
+
+#sudo mkswap /swapfile
+
+- name: Make swapon file
+  command: "sudo swapon {{ swap_file_path }}"
   
+#sudo swapon /swapfile
+
+- name: Turn on swap
+  command: swapon -a
+
+#swapon -a making all available & Devices that are already being used as swap are silently skipped.
+ 
+- name: Verify that the procedure was successful
+  command: swapon -s
+  
+# sudo swapon -s ( s summary) 
+
+- name: Write swap entry in fstab
+  mount: name=none
+         src={{ swap_file_path }}
+         fstype=swap
+         opts=sw
+         passno=0
+         dump=0
+         state=present
+  
+#/swapfile swap swap defaults 0 0
 
 - name: Create installer directory
   file: state=directory path={{ mw_installer_folder }} owner={{ oracle_user }} group={{ oracle_group }}
@@ -38,3 +82,15 @@
   become: true
   become_user: '{{ oracle_user }}'
   #sudo_user: '{{ oracle_user }}'
+
+- name: deleting the JDK-tar file after the installation complets 
+    file:
+      path: "/tmp/jdk-7u80-linux-x64.tar.gz"
+      state: absent
+    delegate_to: localhost
+
+- name: deleting the Jar file after the installation complets 
+    file:
+      path: "/tmp/fmw_12.1.3.0.0_wls.jar" 
+      state: absent
+    delegate_to: localhost
