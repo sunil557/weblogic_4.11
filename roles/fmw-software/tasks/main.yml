@@ -89,16 +89,16 @@
   become_user: '{{ oracle_user }}'
   #sudo_user: '{{ oracle_user }}'
 
-- name: deleting the JDK-tar file after the installation complets 
-  file:
-    path: "/tmp/jdk-7u80-linux-x64.tar.gz"
-    state: absent
-  become: false  
-  delegate_to: localhost
+#- name: deleting the JDK-tar file after the installation complets 
+#  file:
+#    path: "/tmp/jdk-7u80-linux-x64.tar.gz"
+#    state: absent
+#  become: false  
+#  delegate_to: localhost
 
-- name: deleting the Jar file after the installation complets 
-  file:
-    path: "/tmp/fmw_12.1.3.0.0_wls.jar" 
-    state: absent
-  become: false  
-  delegate_to: localhost
+#- name: deleting the Jar file after the installation complets 
+#  file:
+#    path: "/tmp/fmw_12.1.3.0.0_wls.jar" 
+#    state: absent
+#  become: false  
+#  delegate_to: localhost
