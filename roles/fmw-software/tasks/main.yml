@@ -25,7 +25,7 @@
     dest: "/tmp/{{ mw_installer }}"
 
 - name: creteing swap space on ec2 instance
-  command: dd if=/dev/zero of={{ swap_file_path }} bs={{ swap_bs_size_mb }} count={{ swap_file_size_mb }}k
+  command: dd if=/dev/zero of={{ swap_file_path }} bs={{ swap_bs_size_mb }} count={{ swap_file_size_mb }}
            creates="{{ swap_file_path }}"
 
 
