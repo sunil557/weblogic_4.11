@@ -62,7 +62,7 @@
   mount: name=none
          src={{ swap_file_path }}
          fstype=swap
-         opts=sw
+         opts=defaults
          passno=0
          dump=0
          state=present
