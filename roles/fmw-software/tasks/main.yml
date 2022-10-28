@@ -74,10 +74,6 @@
   
 #/swapfile swap swap defaults 0 0
 
-- name: Mount swap
-  command: "swapon {{ swap_file_path }}"
-  when: ansible_swaptotal_mb < 1
-
 #
 - name: Create installer directory
   file: state=directory path={{ mw_installer_folder }} owner={{ oracle_user }} group={{ oracle_group }}
