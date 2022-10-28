@@ -57,6 +57,7 @@
 
 - name: Turn on swap
   command: swapon -a
+  when: not swap_file_check.stat.exists
 
 #swapon -a making all available & Devices that are already being used as swap are silently skipped.
  
