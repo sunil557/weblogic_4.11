@@ -8,10 +8,15 @@ oracle_base: '/oracle/fmw12.1.3'
 #jdk_installation_archive: 'jdk-7u80-linux-x64.tar.gz'
 #jdk_folder: '{{ oracle_base }}/jdk1.7.0_80'
 
+#jdk_repo_root: 'http://10.134.151.85:8888'
+#jdk_repo_base_path: '/java/java7/xLinux64/'
+#jdk_installation_archive: 'jdk-7u80-linux-x64.tar.gz'
+#jdk_folder: '{{ oracle_base }}/jdk1.7.0_80'
+
 jdk_repo_root: 'http://10.134.151.85:8888'
-jdk_repo_base_path: '/java/java7/xLinux64/'
-jdk_installation_archive: 'jdk-7u80-linux-x64.tar.gz'
-jdk_folder: '{{ oracle_base }}/jdk1.7.0_80'
+jdk_repo_base_path: '/java/java8/xLinux64/'
+jdk_installation_archive: 'jdk-8u341-linux-x64.tar.gz'
+jdk_folder: '{{ oracle_base }}/jdk1.8.0_341'
 jdk_copy_path_to_ansible_node: 'roles/linux-jdk/files/'
 
 #Weblogic server, roles/fmw-software/files/fmw_12.1.3.0.0_wls.jar
@@ -22,7 +27,8 @@ weblogic_base_path: '/oracle/weblogic/v12/base/'
 weblogic_copy_path_to_ansible_node: 'roles/fmw-software/files'
 
 # fmw installer
-mw_installer: 'fmw_12.1.3.0.0_wls.jar'
+#mw_installer: 'fmw_12.1.3.0.0_wls.jar'
+mw_installer: 'fmw_14.1.1.0.0_wls.jar'
 
 #subscription crids
 subscription_user: 'sunil57.kdp@gmail.com'
