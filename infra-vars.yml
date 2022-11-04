@@ -23,7 +23,7 @@ jdk_copy_path_to_ansible_node: 'roles/linux-jdk/files/'
 #IBM internal software repo: http://10.134.151.85:8888/oracle/weblogic/v12/base/
 
 weblogic_repo_root: 'http://10.134.151.85:8888'
-weblogic_base_path: '/oracle/weblogic/v12/base/'
+weblogic_base_path: '/oracle/weblogic/v14/base/'
 weblogic_copy_path_to_ansible_node: 'roles/fmw-software/files'
 
 # fmw installer
