@@ -31,8 +31,8 @@ weblogic_copy_path_to_ansible_node: 'roles/fmw-software/files'
 mw_installer: 'fmw_14.1.1.0.0_wls.jar'
 
 #subscription crids
-subscription_user: 'sunil57.kdp@gmail.com'
-subscription_password: 'Sunil_u2457'
+#subscription_user: 'sunil57.kdp@gmail.com'
+#subscription_password: 'Sunil_u2457'
 
 #swap space variables
 swap_file_path: /swapfile
